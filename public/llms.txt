@@ -1,0 +1,43 @@
+# orbling
+
+> An open-source orb for AI chat interfaces: an orb with a face, for React. It shows what an assistant is doing: thinking, reading, typing, working, asking, waiting, watching, surprised, sleepy, error and idle. Pure CSS motion plus a WebGL heat shader. MIT.
+
+## Install
+
+Copy the source into the project with the shadcn CLI. It lands in components/orbling and installs its one dependency, @paper-design/shaders-react:
+
+npx shadcn@latest add https://orbling.vercel.app/r/orbling.json
+
+## Use
+
+import { Orbling, OrblingStatus } from "@/components/orbling";
+
+<Orbling mood="thinking" />
+<OrblingStatus mood="working" />
+
+The stylesheet is imported by the component, so nothing else is needed.
+
+## Orbling props
+
+- mood: "idle" | "thinking" | "reading" | "typing" | "working" | "asking" | "waiting" | "watching" | "surprised" | "sleepy" | "error". Defaults to "idle".
+- size: diameter in px. Defaults to 72.
+- palette: "sky" (the blue, default), "mono" (greys) or "night" (a brighter blue, for dark backgrounds).
+- hue: degrees to turn the colours round the colour wheel. 0 is the blue.
+- heat: the WebGL heat. Defaults to true. Turn it off where many orbs show at once, as browsers keep about 16 WebGL contexts; a CSS stand-in takes its place.
+- label: accessible name. Without it the orb is decoration and screen readers skip it.
+
+## OrblingStatus props
+
+A status line: a small orb with a shimmering label beside it. Takes mood, size (16 by default), palette, hue and heat, plus label to override the text, which defaults to the mood ("Thinking…", "Working…").
+
+## When to use which mood
+
+- thinking: the assistant is working out an answer.
+- reading: it is reading pages, files or results.
+- typing: it is writing the reply.
+- working: a tool or task is running.
+- asking: it is asking the user a question.
+- waiting: the question is up and it waits for the answer.
+- watching: its eyes follow the pointer, for an empty state that waits on the user.
+- error: something failed.
+- idle, sleepy, surprised: resting, away, and a reaction.

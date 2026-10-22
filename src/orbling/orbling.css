@@ -1,0 +1,783 @@
+@property --ry {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --rx {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.orbling {
+  --ball: #c0e4fc;
+  --ground-light: #d6eefd;
+  --ground-dark: #93b9f3;
+  --eye: #194094;
+  --blue: #7ea8f8;
+  --blue-deep: #3574fd;
+  --heat: #7a9eeb;
+  --heat-pale: #a9c8fd;
+  --underside: hsl(215 45% 62% / 0.35);
+  --shade-light: #9ab5ec;
+  --shade-dark: #7d9de2;
+  --gloss: 0.75;
+  --halo: color-mix(in srgb, var(--blue) 60%, transparent);
+  --halo-blur: 0.045em;
+  --ease: cubic-bezier(0.45, 0, 0.25, 1);
+  --in: cubic-bezier(0.16, 1, 0.3, 1);
+  --out: cubic-bezier(0.7, 0, 0.84, 0);
+  --whip: cubic-bezier(0.6, 0, 0.2, 1);
+  --rise: cubic-bezier(0.2, 0.6, 0.35, 1);
+  --fall: cubic-bezier(0.6, 0, 0.8, 0.4);
+  --disc: radial-gradient(circle closest-side, #000 calc(100% - 1px), transparent 100%);
+  --gear: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Cpath%20d%3D%27M39.23%2015.65%20L41.41%202.27%20L58.59%202.27%20L60.77%2015.65%20A36%2036%200%200%201%2074.37%2023.50%20L87.04%2018.70%20L95.63%2033.57%20L85.13%2042.15%20A36%2036%200%200%201%2085.13%2057.85%20L95.63%2066.43%20L87.04%2081.30%20L74.37%2076.50%20A36%2036%200%200%201%2060.77%2084.35%20L58.59%2097.73%20L41.41%2097.73%20L39.23%2084.35%20A36%2036%200%200%201%2025.63%2076.50%20L12.96%2081.30%20L4.37%2066.43%20L14.87%2057.85%20A36%2036%200%200%201%2014.87%2042.15%20L4.37%2033.57%20L12.96%2018.70%20L25.63%2023.50%20A36%2036%200%200%201%2039.23%2015.65%20Z%27%20fill%3D%27black%27%20stroke%3D%27black%27%20stroke-width%3D%273%27%20stroke-linejoin%3D%27round%27%2F%3E%3C%2Fsvg%3E");
+  --d: 4s;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  vertical-align: middle;
+  filter: hue-rotate(var(--hue, 0deg));
+}
+
+.orbling[data-palette="mono"] {
+  --ball: #e7e7ea;
+  --ground-light: #f4f4f5;
+  --ground-dark: #b9b9c0;
+  --eye: #27272a;
+  --blue: #a1a1aa;
+  --blue-deep: #52525b;
+  --heat: #a8a8b0;
+  --heat-pale: #d4d4d8;
+  --underside: hsl(240 5% 45% / 0.3);
+  --shade-light: #c4c4cc;
+  --shade-dark: #9d9da6;
+}
+
+.orbling[data-palette="night"] {
+  --ball: #c4e4ff;
+  --ground-light: #e8f6ff;
+  --ground-dark: #7fb0ee;
+  --eye: #0b1d42;
+  --blue: #9ccdff;
+  --blue-deep: #69a6f7;
+  --heat: #5f9bf0;
+  --heat-pale: #a8d2ff;
+  --underside: hsl(210 60% 42% / 0.38);
+  --shade-light: #8bbcf0;
+  --shade-dark: #5f95dc;
+  --gloss: 0.6;
+}
+
+.orbling-clock {
+  position: absolute;
+  width: 0;
+  height: 0;
+  animation: orbling-clock var(--d) linear infinite;
+}
+
+.orbling-body {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.orbling-mask {
+  position: absolute;
+  inset: -12.5%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.orbling-ball {
+  position: absolute;
+  inset: 10%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 50%;
+  container-type: size;
+  background: radial-gradient(circle at 34% 28%, var(--ground-light), var(--ball) 45%, var(--ground-dark) 100%);
+  box-shadow: 0 0 var(--halo-blur) 0.0075em var(--halo);
+  animation: orbling-breathe 5s ease-in-out infinite;
+}
+
+.orbling-gloss,
+.orbling-heat,
+.orbling-eyes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.orbling-gloss {
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 32% 22%,
+    rgb(255 255 255 / var(--gloss)),
+    rgb(255 255 255 / calc(var(--gloss) * 0.16)) 30%,
+    transparent 46%
+  );
+  box-shadow:
+    inset 0 -8cqw 16cqw var(--underside),
+    inset 0 2cqw 4cqw rgb(255 255 255 / 0.45),
+    inset 0 0 0 1px rgb(255 255 255 / 0.25);
+}
+
+.orbling-heat {
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.orbling-heat::before,
+.orbling-heat::after {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(9cqw);
+  background: radial-gradient(circle, var(--heat) 0%, var(--blue) 35%, transparent 70%);
+  animation: orbling-heat-a 7.5s ease-in-out infinite;
+}
+
+.orbling-heat::after {
+  inset: 20%;
+  background: radial-gradient(circle, var(--blue) 0%, var(--heat-pale) 40%, transparent 72%);
+  animation: orbling-heat-b 9.7s ease-in-out infinite;
+}
+
+.orbling-eyes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14cqw;
+  padding-bottom: 4cqw;
+  backface-visibility: hidden;
+  transform: perspective(260cqw) translateZ(-50cqw) rotateY(var(--ry)) rotateX(var(--rx)) translateZ(50cqw);
+}
+
+.orbling-eyes i {
+  position: relative;
+  width: 10cqw;
+  height: 19cqw;
+  border-radius: 9999px;
+  background-color: var(--eye);
+  animation: orbling-blink 6.3s ease-in-out infinite;
+}
+
+.orbling-shade {
+  position: absolute;
+  inset: 10%;
+  z-index: 3;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background: radial-gradient(circle, var(--shade-light), var(--shade-dark));
+}
+
+.orbling-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 50%;
+  opacity: 0;
+  background: linear-gradient(180deg, var(--blue), var(--blue-deep));
+}
+
+.orbling-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.orbling-fx > * {
+  position: absolute;
+  opacity: 0;
+  overflow: visible;
+}
+
+.orbling-dot {
+  inset: 0;
+  z-index: 2;
+  margin: auto;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--blue), var(--blue-deep));
+}
+
+.orbling-z {
+  --z: 0.42;
+  --zs: calc(0.8 + var(--i) * 0.22);
+  z-index: 2;
+  font: 800 calc(var(--z) * 1em) / 1 ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  left: calc((0.68em + var(--i) * 0.06em) / var(--z));
+  top: calc(-0.02em / var(--z));
+  color: var(--blue-deep);
+}
+
+.orbling-q {
+  z-index: 2;
+}
+
+.orbling-q-hook {
+  fill: none;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.orbling-q-dot {
+  fill: var(--blue-deep);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.orbling-bang {
+  z-index: 2;
+  left: 0.86em;
+  top: -0.36em;
+  width: 0.17em;
+  height: 0.42em;
+  fill: var(--blue-deep);
+  transform-origin: 50% 100%;
+}
+
+.orbling-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.orbling-label {
+  mask-image: linear-gradient(90deg, #000 40%, rgb(0 0 0 / 0.35) 50%, #000 60%);
+  mask-size: 300% 100%;
+  animation: orbling-shimmer 2.4s linear infinite;
+}
+
+@keyframes orbling-shimmer {
+  from {
+    mask-position: 100% 0;
+  }
+  to {
+    mask-position: 0 0;
+  }
+}
+
+@keyframes orbling-clock {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes orbling-breathe {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.035; }
+}
+
+@keyframes orbling-blink {
+  0%, 44%, 48%, 90%, 93%, 96%, 100% { scale: 1 1; }
+  46%, 91.5%, 94.5% { scale: 1 0.1; }
+}
+
+@keyframes orbling-heat-a {
+  0%, 100% { translate: -30% 25%; opacity: 0.4; }
+  20% { opacity: 0.95; }
+  50% { translate: 20% -20%; opacity: 0.8; }
+  75% { opacity: 0.45; }
+}
+
+@keyframes orbling-heat-b {
+  0%, 100% { translate: 35% 30%; opacity: 0.35; }
+  30% { opacity: 0.85; }
+  60% { translate: -25% -15%; opacity: 0.7; }
+  85% { opacity: 0.4; }
+}
+
+@keyframes orbling-eyes-out {
+  0%, 6% { opacity: 1; }
+  18%, 82% { opacity: 0; }
+  94%, 100% { opacity: 1; }
+}
+
+.orbling[data-act="idle"] { --d: 11s; }
+.orbling[data-act="spin"] { --d: 1.5s; }
+.orbling[data-act="dots"] { --d: 3.8s; }
+.orbling[data-act="gear"] { --d: 3.8s; }
+.orbling[data-act="ponder"] { --d: 4.6s; }
+.orbling[data-act="read"] { --d: 4.2s; }
+.orbling[data-act="wonder"] { --d: 4.2s; }
+.orbling[data-act="down"] { --d: 4.2s; }
+.orbling[data-act="stamp"] { --d: 4.2s; }
+.orbling[data-act="surprise"] { --d: 2.6s; }
+.orbling[data-act="sleep"] { --d: 5.6s; }
+.orbling[data-act="shake"] { --d: 2.4s; }
+.orbling[data-act="watch"] { --d: 4s; }
+
+.orbling[data-act="idle"] .orbling-eyes {
+  animation: orbling-look-around var(--d) cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+@keyframes orbling-look-around {
+  0%, 16% { --ry: 0deg; --rx: 0deg; }
+  20%, 34% { --ry: -20deg; --rx: 5deg; }
+  38%, 50% { --ry: 0deg; --rx: 0deg; }
+  54%, 66% { --ry: 18deg; --rx: -3deg; }
+  70%, 80% { --ry: 5deg; --rx: 14deg; }
+  84%, 100% { --ry: 0deg; --rx: 0deg; }
+}
+
+.orbling[data-act="spin"] .orbling-eyes {
+  animation: orbling-spin-eyes var(--d) var(--whip) infinite both;
+}
+
+.orbling[data-act="spin"] .orbling-body {
+  animation: orbling-spin-body var(--d) var(--whip) infinite both;
+}
+
+@keyframes orbling-spin-eyes {
+  0% { --ry: 0deg; animation-timing-function: cubic-bezier(0.25, 0.6, 0.35, 1); }
+  18% { --ry: -24deg; animation-timing-function: cubic-bezier(0.85, 0, 0.15, 1); }
+  56% { --ry: 376deg; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  70% { --ry: 356deg; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  82% { --ry: 361.5deg; animation-timing-function: cubic-bezier(0.25, 0.6, 0.35, 1); }
+  100% { --ry: 360deg; }
+}
+
+@keyframes orbling-spin-body {
+  0% { scale: 1 1; animation-timing-function: cubic-bezier(0.25, 0.6, 0.35, 1); }
+  18% { scale: 1.06 0.94; animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  37% { scale: 0.94 1.06; animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  56% { scale: 1.03 0.97; animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  70% { scale: 0.99 1.01; }
+  82%, 100% { scale: 1 1; }
+}
+
+.orbling[data-act="dots"] .orbling-eyes {
+  animation: orbling-dots-eyes var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="dots"] .orbling-body {
+  animation: orbling-dots-body var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="dots"] .orbling-tint {
+  animation: orbling-dots-tint var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="dots"] .orbling-dot[data-side="l"] {
+  animation: orbling-dot-l var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="dots"] .orbling-dot[data-side="r"] {
+  animation: orbling-dot-r var(--d) var(--ease) infinite both;
+}
+
+@keyframes orbling-dots-eyes {
+  0%, 6% { opacity: 1; }
+  14%, 86% { opacity: 0; }
+  95%, 100% { opacity: 1; }
+}
+
+@keyframes orbling-dots-tint {
+  0%, 8% { opacity: 0; }
+  18%, 82% { opacity: 1; }
+  92%, 100% { opacity: 0; }
+}
+
+@keyframes orbling-dots-body {
+  0%, 4% { scale: 1; translate: 0 0; }
+  18% { scale: 0.22; }
+  33% { translate: 0 0; animation-timing-function: var(--rise); }
+  39% { translate: 0 -10%; animation-timing-function: var(--fall); }
+  45% { translate: 0 0; }
+  57% { translate: 0 0; animation-timing-function: var(--rise); }
+  63% { translate: 0 -10%; animation-timing-function: var(--fall); }
+  69% { translate: 0 0; }
+  82% { scale: 0.22; }
+  96%, 100% { scale: 1; translate: 0 0; }
+}
+
+@keyframes orbling-dot-l {
+  0%, 10% { translate: 0 0; opacity: 0; }
+  12% { opacity: 1; }
+  24% { translate: -164% 0; }
+  27% { translate: -164% 0; animation-timing-function: var(--rise); }
+  33% { translate: -164% -45%; animation-timing-function: var(--fall); }
+  39% { translate: -164% 0; }
+  51% { translate: -164% 0; animation-timing-function: var(--rise); }
+  57% { translate: -164% -45%; animation-timing-function: var(--fall); }
+  63% { translate: -164% 0; }
+  76% { translate: -164% 0; opacity: 1; }
+  86% { translate: 0 0; opacity: 1; }
+  88%, 100% { translate: 0 0; opacity: 0; }
+}
+
+@keyframes orbling-dot-r {
+  0%, 10% { translate: 0 0; opacity: 0; }
+  12% { opacity: 1; }
+  24% { translate: 164% 0; }
+  39% { translate: 164% 0; animation-timing-function: var(--rise); }
+  45% { translate: 164% -45%; animation-timing-function: var(--fall); }
+  51% { translate: 164% 0; }
+  63% { translate: 164% 0; animation-timing-function: var(--rise); }
+  69% { translate: 164% -45%; animation-timing-function: var(--fall); }
+  75% { translate: 164% 0; }
+  76% { translate: 164% 0; opacity: 1; }
+  86% { translate: 0 0; opacity: 1; }
+  88%, 100% { translate: 0 0; opacity: 0; }
+}
+
+.orbling[data-act="gear"] .orbling-mask {
+  mask-image: var(--disc), var(--gear), var(--disc);
+  mask-composite: exclude, add, add;
+  animation:
+    orbling-gear-morph var(--d) var(--ease) infinite both,
+    orbling-gear-turn var(--d) linear infinite both;
+}
+
+.orbling[data-act="gear"] .orbling-ball {
+  animation:
+    orbling-breathe 5s ease-in-out infinite,
+    orbling-gear-unturn var(--d) linear infinite both;
+}
+
+.orbling[data-act="gear"] .orbling-shade {
+  animation: orbling-gear-shade var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="gear"] .orbling-eyes {
+  animation: orbling-eyes-out var(--d) var(--ease) infinite both;
+}
+
+@keyframes orbling-gear-morph {
+  0%, 6% { mask-size: 0% 0%, 64% 64%, 100% 100%; }
+  26%, 74% { mask-size: 28.8% 28.8%, 80% 80%, 57.6% 57.6%; }
+  94%, 100% { mask-size: 0% 0%, 64% 64%, 100% 100%; }
+}
+
+@keyframes orbling-gear-turn {
+  0%, 6% { rotate: 0deg; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); }
+  94%, 100% { rotate: 360deg; }
+}
+
+@keyframes orbling-gear-unturn {
+  0%, 6% { rotate: 0deg; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); }
+  94%, 100% { rotate: -360deg; }
+}
+
+@keyframes orbling-gear-shade {
+  0%, 6% { opacity: 0; }
+  26%, 74% { opacity: 0.6; }
+  94%, 100% { opacity: 0; }
+}
+
+.orbling[data-act="ponder"] .orbling-body {
+  transform-origin: 50% 90%;
+  animation: orbling-ponder-tilt var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="ponder"] .orbling-eyes {
+  animation: orbling-ponder-look var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="ponder"] .orbling-eyes i {
+  animation: orbling-ponder-squint var(--d) var(--ease) infinite both;
+}
+
+@keyframes orbling-ponder-tilt {
+  0%, 8% { rotate: 0deg; translate: 0 0; }
+  22%, 40% { rotate: 6deg; translate: 0 0; }
+  54%, 70% { rotate: -5deg; translate: 0 0; }
+  76% { rotate: -2deg; translate: 0 0.035em; }
+  82% { rotate: -1deg; translate: 0 0; }
+  94%, 100% { rotate: 0deg; translate: 0 0; }
+}
+
+@keyframes orbling-ponder-look {
+  0%, 8% { --ry: 0deg; --rx: 0deg; }
+  22%, 40% { --ry: -18deg; --rx: 18deg; }
+  54%, 70% { --ry: 16deg; --rx: 15deg; }
+  76% { --ry: 4deg; --rx: -4deg; }
+  82% { --ry: 2deg; --rx: 2deg; }
+  94%, 100% { --ry: 0deg; --rx: 0deg; }
+}
+
+@keyframes orbling-ponder-squint {
+  0%, 10% { scale: 1 1; }
+  22%, 70% { scale: 1.06 0.78; }
+  76%, 100% { scale: 1 1; }
+}
+
+.orbling[data-act="read"] .orbling-eyes {
+  animation: orbling-read var(--d) var(--ease) infinite both;
+}
+
+@keyframes orbling-read {
+  0% { --ry: 0deg; --rx: 0deg; }
+  12% { --ry: -10deg; --rx: 4deg; animation-timing-function: linear; }
+  42% { --ry: 10deg; --rx: 4deg; }
+  54% { --ry: -10deg; --rx: -1deg; animation-timing-function: linear; }
+  84% { --ry: 10deg; --rx: -1deg; }
+  100% { --ry: 0deg; --rx: 0deg; }
+}
+
+.orbling[data-act="wonder"] .orbling-body {
+  transform-origin: 50% 85%;
+  animation: orbling-tilt var(--d) cubic-bezier(0.45, 0, 0.2, 1) infinite both;
+}
+
+.orbling[data-act="wonder"] .orbling-eyes {
+  animation: orbling-up-right var(--d) cubic-bezier(0.45, 0, 0.2, 1) infinite both;
+}
+
+.orbling[data-act="wonder"] .orbling-q {
+  opacity: 1;
+  left: 0.84em;
+  top: -0.6em;
+  width: 0.52em;
+  height: 0.72em;
+  rotate: 10deg;
+}
+
+.orbling[data-act="wonder"] .orbling-q-hook {
+  animation: orbling-draw var(--d) infinite both;
+}
+
+.orbling[data-act="wonder"] .orbling-q-dot {
+  animation: orbling-q-dot var(--d) infinite both;
+}
+
+@keyframes orbling-tilt {
+  0%, 10%, 88%, 100% { rotate: 0deg; }
+  22%, 76% { rotate: -10deg; }
+}
+
+@keyframes orbling-up-right {
+  0%, 10%, 88%, 100% { --ry: 0deg; --rx: 0deg; }
+  22%, 76% { --ry: 20deg; --rx: 16deg; }
+}
+
+@keyframes orbling-draw {
+  0%, 14% { stroke-dashoffset: 1; opacity: 1; animation-timing-function: var(--in); }
+  32%, 76% { stroke-dashoffset: 0; opacity: 1; animation-timing-function: var(--out); }
+  88% { stroke-dashoffset: 0; opacity: 0; }
+  100% { stroke-dashoffset: 1; opacity: 0; }
+}
+
+@keyframes orbling-q-dot {
+  0%, 30% { opacity: 0; scale: 1.6; animation-timing-function: var(--in); }
+  38%, 76% { opacity: 1; scale: 1; animation-timing-function: var(--out); }
+  88%, 100% { opacity: 0; scale: 0.85; }
+}
+
+.orbling[data-act="down"] .orbling-body {
+  animation: orbling-dip var(--d) infinite both;
+}
+
+.orbling[data-act="down"] .orbling-eyes {
+  animation: orbling-look-down var(--d) infinite both;
+}
+
+@keyframes orbling-dip {
+  0%, 8% { translate: 0 0; animation-timing-function: var(--in); }
+  22%, 72% { translate: 0 0.04em; animation-timing-function: var(--ease); }
+  88%, 100% { translate: 0 0; }
+}
+
+@keyframes orbling-look-down {
+  0%, 8% { --ry: 0deg; --rx: 0deg; animation-timing-function: var(--in); }
+  22% { --ry: -8deg; --rx: -22deg; animation-timing-function: var(--ease); }
+  52%, 72% { --ry: 8deg; --rx: -22deg; animation-timing-function: var(--ease); }
+  88%, 100% { --ry: 0deg; --rx: 0deg; }
+}
+
+.orbling[data-act="stamp"] .orbling-body {
+  transform-origin: 50% 100%;
+  animation: orbling-squash var(--d) infinite both;
+}
+
+.orbling[data-act="stamp"] .orbling-eyes {
+  animation: orbling-up var(--d) cubic-bezier(0.45, 0, 0.2, 1) infinite both;
+}
+
+.orbling[data-act="stamp"] .orbling-q {
+  left: 0.22em;
+  top: -0.8em;
+  width: 0.62em;
+  height: 0.87em;
+  transform-origin: 50% 100%;
+  animation: orbling-drop var(--d) infinite both;
+}
+
+.orbling[data-act="stamp"] .orbling-q-hook {
+  stroke-dashoffset: 0;
+}
+
+.orbling[data-act="stamp"] .orbling-q-dot {
+  opacity: 1;
+}
+
+@keyframes orbling-up {
+  0%, 10%, 88%, 100% { --ry: 0deg; --rx: 0deg; }
+  22%, 76% { --ry: 0deg; --rx: 20deg; }
+}
+
+@keyframes orbling-drop {
+  0%, 12% { opacity: 0; translate: 0 -1.1em; rotate: 0deg; animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  24% { opacity: 1; translate: 0 0; rotate: 0deg; animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); }
+  28% { opacity: 1; translate: 0 0.13em; rotate: 2deg; animation-timing-function: var(--ease); }
+  40%, 76% { opacity: 1; translate: 0 0; rotate: 8deg; animation-timing-function: var(--out); }
+  88%, 100% { opacity: 0; translate: 0 -0.2em; rotate: 8deg; }
+}
+
+@keyframes orbling-squash {
+  0%, 24% { scale: 1 1; animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); }
+  28% { scale: 1.09 0.86; animation-timing-function: var(--ease); }
+  40%, 100% { scale: 1 1; }
+}
+
+.orbling[data-act="surprise"] .orbling-body {
+  transform-origin: 50% 100%;
+  animation: orbling-jump var(--d) infinite both;
+}
+
+.orbling[data-act="surprise"] .orbling-eyes {
+  animation: orbling-surprise-look var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="surprise"] .orbling-eyes i {
+  animation: orbling-wide var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="surprise"] .orbling-bang {
+  animation: orbling-bang var(--d) infinite both;
+}
+
+@keyframes orbling-jump {
+  0%, 8% { translate: 0 0; scale: 1 1; animation-timing-function: var(--ease); }
+  14% { translate: 0 0; scale: 1.08 0.9; animation-timing-function: var(--rise); }
+  26% { translate: 0 -0.16em; scale: 0.93 1.08; animation-timing-function: var(--fall); }
+  38% { translate: 0 0; scale: 1.06 0.94; animation-timing-function: var(--ease); }
+  46%, 100% { translate: 0 0; scale: 1 1; }
+}
+
+@keyframes orbling-surprise-look {
+  0%, 12%, 84%, 100% { --ry: 0deg; --rx: 0deg; }
+  24%, 72% { --ry: 0deg; --rx: 8deg; }
+}
+
+@keyframes orbling-wide {
+  0%, 12% { scale: 1 1; }
+  20%, 72% { scale: 1.3 1.3; }
+  84%, 100% { scale: 1 1; }
+}
+
+@keyframes orbling-bang {
+  0%, 20% { opacity: 0; scale: 0.4; animation-timing-function: var(--in); }
+  30%, 72% { opacity: 1; scale: 1; rotate: 0deg; animation-timing-function: var(--out); }
+  84%, 100% { opacity: 0; scale: 0.8; rotate: 8deg; }
+}
+
+.orbling[data-act="sleep"] .orbling-body {
+  transform-origin: 50% 100%;
+  animation: orbling-doze var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="sleep"] .orbling-eyes {
+  animation: orbling-sleep-look var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="sleep"] .orbling-eyes i {
+  animation: orbling-lids var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="sleep"] .orbling-z {
+  animation: orbling-z var(--d) var(--ease) infinite both;
+  animation-delay: calc(var(--i) * 0.6s);
+}
+
+@keyframes orbling-doze {
+  0%, 8% { rotate: 0deg; translate: 0 0; scale: 1; }
+  26% { rotate: 7deg; translate: 0 0.03em; scale: 1; }
+  44% { rotate: 7deg; translate: 0 0.03em; scale: 1.025; }
+  62% { rotate: 7deg; translate: 0 0.03em; scale: 1; }
+  80% { rotate: 7deg; translate: 0 0.03em; scale: 1.025; }
+  92%, 100% { rotate: 0deg; translate: 0 0; scale: 1; }
+}
+
+@keyframes orbling-sleep-look {
+  0%, 8%, 90%, 100% { --ry: 0deg; --rx: 0deg; }
+  26%, 82% { --ry: 0deg; --rx: -5deg; }
+}
+
+@keyframes orbling-lids {
+  0%, 8% { width: 10cqw; height: 19cqw; translate: 0 0; }
+  26%, 82% { width: 16cqw; height: 8.5cqw; translate: 0 2.5cqw; }
+  94%, 100% { width: 10cqw; height: 19cqw; translate: 0 0; }
+}
+
+@keyframes orbling-z {
+  0%, 22% { opacity: 0; translate: 0 0; scale: calc(var(--zs) * 0.6); }
+  32% { opacity: 1; }
+  64%, 100% { opacity: 0; translate: calc(0.34em / var(--z)) calc(-0.62em / var(--z)); scale: var(--zs); }
+}
+
+.orbling[data-act="shake"] .orbling-body {
+  animation: orbling-no var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="shake"] .orbling-eyes {
+  animation: orbling-no-look var(--d) var(--ease) infinite both;
+}
+
+.orbling[data-act="shake"] .orbling-eyes i {
+  animation: orbling-squint var(--d) var(--ease) infinite both;
+}
+
+@keyframes orbling-no {
+  0%, 8% { translate: 0 0; scale: 1 1; }
+  16% { translate: -0.035em 0; scale: 1.02 0.97; }
+  26% { translate: 0.035em 0; }
+  36% { translate: -0.025em 0; }
+  46% { translate: 0.015em 0; }
+  56% { translate: 0 0; scale: 1.02 0.97; }
+  84% { translate: 0 0.015em; scale: 1.02 0.97; }
+  94%, 100% { translate: 0 0; scale: 1 1; }
+}
+
+@keyframes orbling-no-look {
+  0%, 8% { --ry: 0deg; --rx: 0deg; }
+  16% { --ry: -22deg; --rx: 0deg; }
+  26% { --ry: 22deg; --rx: 0deg; }
+  36% { --ry: -16deg; --rx: 0deg; }
+  46% { --ry: 10deg; --rx: 0deg; }
+  56%, 84% { --ry: 0deg; --rx: -10deg; }
+  94%, 100% { --ry: 0deg; --rx: 0deg; }
+}
+
+@keyframes orbling-squint {
+  0%, 8% { scale: 1 1; }
+  16%, 84% { scale: 1.1 0.55; }
+  94%, 100% { scale: 1 1; }
+}
+
+.orbling[data-act="watch"] .orbling-body {
+  transform-origin: 50% 90%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbling *,
+  .orbling *::before,
+  .orbling *::after {
+    animation: none !important;
+  }
+}

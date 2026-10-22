@@ -1,0 +1,70 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "orbling",
+  "homepage": "https://orbling.vercel.app",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "orbling",
+      "type": "registry:component",
+      "title": "Orbling",
+      "description": "An AI orb with a face that shows what an assistant is doing: thinking, reading, typing, working, asking and more.",
+      "dependencies": [
+        "@paper-design/shaders-react"
+      ],
+      "docs": "Import from \"@/components/orbling\". <Orbling mood=\"thinking\" /> or <OrblingStatus mood=\"working\" />. Docs: https://orbling.vercel.app/llms.txt",
+      "files": [
+        {
+          "path": "registry/orbling/index.ts",
+          "type": "registry:component",
+          "target": "components/orbling/index.ts"
+        },
+        {
+          "path": "registry/orbling/orbling.tsx",
+          "type": "registry:component",
+          "target": "components/orbling/orbling.tsx"
+        },
+        {
+          "path": "registry/orbling/status.tsx",
+          "type": "registry:component",
+          "target": "components/orbling/status.tsx"
+        },
+        {
+          "path": "registry/orbling/moods.ts",
+          "type": "registry:component",
+          "target": "components/orbling/moods.ts"
+        },
+        {
+          "path": "registry/orbling/use-act.ts",
+          "type": "registry:component",
+          "target": "components/orbling/use-act.ts"
+        },
+        {
+          "path": "registry/orbling/use-gaze.ts",
+          "type": "registry:component",
+          "target": "components/orbling/use-gaze.ts"
+        },
+        {
+          "path": "registry/orbling/ball.tsx",
+          "type": "registry:component",
+          "target": "components/orbling/ball.tsx"
+        },
+        {
+          "path": "registry/orbling/heat.tsx",
+          "type": "registry:component",
+          "target": "components/orbling/heat.tsx"
+        },
+        {
+          "path": "registry/orbling/effects.tsx",
+          "type": "registry:component",
+          "target": "components/orbling/effects.tsx"
+        },
+        {
+          "path": "registry/orbling/orbling.css",
+          "type": "registry:file",
+          "target": "components/orbling/orbling.css"
+        }
+      ]
+    }
+  ]
+}
